@@ -88,7 +88,7 @@ func readSection(data string, section string) ([]string, error) {
 			if len(tokens) > 1 {
 				for _, t := range tokens {
 					attr := strings.SplitN(t, "=", 2)
-					if attr[0] == "swarm_port" {
+					if attr[0] == "docker_port" {
 						port = attr[1]
 					}
 				}
