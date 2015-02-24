@@ -18,7 +18,10 @@ type AnsibleDiscoveryService struct {
 }
 
 func init() {
-	discovery.Register("ansible", &AnsibleDiscoveryService{})
+	service := &AnsibleDiscoveryService{}
+	discovery.Register("ansible", service)
+	// alias to aiyara
+	discovery.Register("aiyara", service)
 }
 
 func inc(s string) string {
