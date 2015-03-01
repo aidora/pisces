@@ -54,3 +54,22 @@ func TestGeneratorWithPort(t *testing.T) {
 	assert.Equal(t, ips[9], "127.0.0.10:2375")
 	assert.Equal(t, ips[10], "127.0.0.11:2375")
 }
+
+func TestGenerateHostnames(t *testing.T) {
+	ips := Generate("web[00:03].abc.com")
+	assert.Equal(t, "web00.abc.com", ips[0])
+	assert.Equal(t, "web01.abc.com", ips[1])
+	assert.Equal(t, "web02.abc.com", ips[2])
+	assert.Equal(t, "web03.abc.com", ips[3])
+
+	ips = Generate("[00:03]h.abc.com")
+	assert.Equal(t, "00h.abc.com", ips[0])
+	assert.Equal(t, "01h.abc.com", ips[1])
+	assert.Equal(t, "02h.abc.com", ips[2])
+	assert.Equal(t, "03h.abc.com", ips[3])
+
+	ips = Generate("web-[a1z:a2b].example.com")
+	assert.Equal(t, "web-a1z.example.com", ips[0])
+	assert.Equal(t, "web-a2a.example.com", ips[1])
+	assert.Equal(t, "web-a2b.example.com", ips[2])
+}
