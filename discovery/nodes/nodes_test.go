@@ -14,56 +14,18 @@ func TestInitialise(t *testing.T) {
 	assert.Equal(t, discovery.entries[1].String(), "2.2.2.2:2222")
 }
 
+func TestInitialiseWithPattern(t *testing.T) {
+	discovery := &NodesDiscoveryService{}
+	discovery.Initialize("1.1.1.[1:2]:1111,2.2.2.[2:4]:2222", 0)
+	assert.Equal(t, len(discovery.entries), 5)
+	assert.Equal(t, discovery.entries[0].String(), "1.1.1.1:1111")
+	assert.Equal(t, discovery.entries[1].String(), "1.1.1.2:1111")
+	assert.Equal(t, discovery.entries[2].String(), "2.2.2.2:2222")
+	assert.Equal(t, discovery.entries[3].String(), "2.2.2.3:2222")
+	assert.Equal(t, discovery.entries[4].String(), "2.2.2.4:2222")
+}
+
 func TestRegister(t *testing.T) {
 	discovery := &NodesDiscoveryService{}
 	assert.Error(t, discovery.Register("0.0.0.0"))
-}
-
-func TestGeneratorNotGenerate(t *testing.T) {
-	ips := generate("127.0.0.1")
-	assert.Equal(t, len(ips), 1)
-	assert.Equal(t, ips[0], "127.0.0.1")
-}
-
-func TestGeneratorWithPortNotGenerate(t *testing.T) {
-	ips := generate("127.0.0.1:8080")
-	assert.Equal(t, len(ips), 1)
-	assert.Equal(t, ips[0], "127.0.0.1:8080")
-}
-
-func TestGeneratorMatchFailedNotGenerate(t *testing.T) {
-	ips := generate("127.0.0.[1]")
-	assert.Equal(t, len(ips), 1)
-	assert.Equal(t, ips[0], "127.0.0.[1]")
-}
-
-func TestGeneratorSimple(t *testing.T) {
-	ips := generate("127.0.0.[00:09]")
-	assert.Equal(t, len(ips), 10)
-	assert.Equal(t, ips[0], "127.0.0.00")
-	assert.Equal(t, ips[1], "127.0.0.01")
-	assert.Equal(t, ips[2], "127.0.0.02")
-	assert.Equal(t, ips[3], "127.0.0.03")
-	assert.Equal(t, ips[4], "127.0.0.04")
-	assert.Equal(t, ips[5], "127.0.0.05")
-	assert.Equal(t, ips[6], "127.0.0.06")
-	assert.Equal(t, ips[7], "127.0.0.07")
-	assert.Equal(t, ips[8], "127.0.0.08")
-	assert.Equal(t, ips[9], "127.0.0.09")
-}
-
-func TestGeneratorWithPort(t *testing.T) {
-	ips := generate("127.0.0.[1:11]:2375")
-	assert.Equal(t, len(ips), 11)
-	assert.Equal(t, ips[0], "127.0.0.1:2375")
-	assert.Equal(t, ips[1], "127.0.0.2:2375")
-	assert.Equal(t, ips[2], "127.0.0.3:2375")
-	assert.Equal(t, ips[3], "127.0.0.4:2375")
-	assert.Equal(t, ips[4], "127.0.0.5:2375")
-	assert.Equal(t, ips[5], "127.0.0.6:2375")
-	assert.Equal(t, ips[6], "127.0.0.7:2375")
-	assert.Equal(t, ips[7], "127.0.0.8:2375")
-	assert.Equal(t, ips[8], "127.0.0.9:2375")
-	assert.Equal(t, ips[9], "127.0.0.10:2375")
-	assert.Equal(t, ips[10], "127.0.0.11:2375")
 }

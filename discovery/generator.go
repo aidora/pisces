@@ -1,4 +1,4 @@
-package nodes
+package discovery
 
 import (
 	"fmt"
@@ -24,7 +24,10 @@ func incString(s string) string {
 	}
 }
 
-func generate(pattern string) []string {
+//
+// IP and Hostname generator
+//
+func Generate(pattern string) []string {
 	re, _ := regexp.Compile(`\[(.+):(.+)\]`)
 	submatch := re.FindStringSubmatch(pattern)
 	if submatch == nil {

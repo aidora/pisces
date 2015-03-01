@@ -16,7 +16,7 @@ func init() {
 
 func (s *NodesDiscoveryService) Initialize(uris string, _ int) error {
 	for _, input := range strings.Split(uris, ",") {
-		for _, ip := range generate(input) {
+		for _, ip := range discovery.Generate(input) {
 			entry, err := discovery.NewEntry(ip)
 			if err != nil {
 				return err
