@@ -17,7 +17,7 @@ func TestContent(t *testing.T) {
 1.1.1.[1:2]:1111
 2.2.2.[2:4]:2222
 `
-	ips := generateFromData([]byte(data))
+	ips := parseFileContent([]byte(data))
 	assert.Equal(t, ips[0], "1.1.1.1:1111")
 	assert.Equal(t, ips[1], "1.1.1.2:1111")
 	assert.Equal(t, ips[2], "2.2.2.2:2222")
