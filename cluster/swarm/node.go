@@ -4,7 +4,9 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -408,6 +410,13 @@ func (n *node) destroy(container *cluster.Container, force bool) error {
 }
 
 func (n *node) pull(image string) error {
+	filename := filepath.Join(homepath(".swarm"), "rewrite_rules.yaml")
+	yamlRules, err := ioutil.ReadFile(filename)
+	if err == nil {
+		image, _ = rewrite(image, n.labels, parseRules(string(yamlRules)))
+		log.Debug(">>> image name after rewrite: " + image)
+	}
+
 	if !strings.Contains(image, ":") {
 		image = image + ":latest"
 	}
