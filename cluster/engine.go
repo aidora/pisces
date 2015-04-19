@@ -356,6 +356,10 @@ func (e *Engine) Create(config *dockerclient.ContainerConfig, name string, pullI
 		client = e.client
 	)
 
+	// rewrite to make it use a platform-specific image
+	config.Image = rewriteWithDefaultRules(e, config.Image)
+	log.Infof("Create: rewrite %s", config.Image)
+
 	newConfig := *config
 
 	// nb of CPUs -> real CpuShares
@@ -403,6 +407,8 @@ func (e *Engine) Destroy(container *Container, force bool) error {
 
 // Pull an image on the engine
 func (e *Engine) Pull(image string, authConfig *dockerclient.AuthConfig) error {
+	image = rewriteWithDefaultRules(e, image)
+
 	if !strings.Contains(image, ":") {
 		image = image + ":latest"
 	}
